@@ -14,6 +14,7 @@ class LearningAgent:
         self.nS = nS
         self.nA = nA
         self.Q = [[0]*nA]*nS
+        self.visitedTimes = [[0]*nA]*nS
         self.alpha = 0.6
         self.discFactor = 1
         # define this function
@@ -28,9 +29,16 @@ class LearningAgent:
     def selectactiontolearn(self,st,aa):
         # define this function
         # print("select one action to learn better")
-        nA = len(aa)
-        a = random.randint(0, nA-1)
+        #nA = len(aa)
+        #a = random.randint(0, nA-1)
+        a = 0
+        minValue = 9999
+        for visIdx in range(len(aa)):
+            if self.Q[st][visIdx] < minValue:
+                minValue = self.Q[st][visIdx]
+                a = visIdx
         # define this function
+        self.visitedTimes[st][a] += 1
         return a
 
     # Select one action, used when evaluating
@@ -42,10 +50,10 @@ class LearningAgent:
     def selectactiontoexecute(self,st,aa):
         # define this function
         a = 0
-        mValue = -1
+        maxValue = -1
         for actionIdx in range(len(aa)):
-            if self.Q[st][actionIdx] > mValue:
-                mValue = self.Q[st][actionIdx]
+            if self.Q[st][actionIdx] > maxValue:
+                maxValue = self.Q[st][actionIdx]
                 a = actionIdx
         # print("select one action to see if I learned")
         return a
@@ -60,7 +68,6 @@ class LearningAgent:
         # define this function
         #print("learn something from this data")
         best = self.maxInd(self.Q[nst])
-        print(self.Q[nst][best])
         self.Q[ost][a] += self.alpha*(r + self.discFactor*self.Q[nst][best] - self.Q[ost][a])
         return
 
