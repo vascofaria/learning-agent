@@ -1,5 +1,5 @@
 import random
-
+import time
 # LearningAgent to implement
 # no knowledeg about the environment can be used
 # the code should work even with another environment
@@ -13,8 +13,14 @@ class LearningAgent:
         # define this function
         self.nS = nS
         self.nA = nA
-        self.Q = [[0]*nA]*nS
-        self.visitedTimes = [[0]*nA]*nS
+        self.Q = []
+        self.visitedTimes = []
+        for i in range(nS):
+            self.Q.append([])
+            self.visitedTimes.append([])
+            for j in range(nA):
+                self.Q[i].append(0)
+                self.visitedTimes[i].append(0)
         self.alpha = 0.6
         self.discFactor = 1
         # define this function
@@ -32,13 +38,29 @@ class LearningAgent:
         #nA = len(aa)
         #a = random.randint(0, nA-1)
         a = 0
-        minValue = 9999
+        minValue = self.visitedTimes[st][0]
         for visIdx in range(len(aa)):
-            if self.Q[st][visIdx] < minValue:
-                minValue = self.Q[st][visIdx]
+            if self.visitedTimes[st][visIdx] < minValue:
+                minValue = self.visitedTimes[st][visIdx]
                 a = visIdx
+
+        minList = []
+        cnt = 0
+        for i in range(len(aa)):
+            if self.visitedTimes[st][i] == minValue:
+                minList.append(i)
+                cnt += 1
+
+        a = minList[random.randint(0, cnt-1)]
+
         # define this function
         self.visitedTimes[st][a] += 1
+        #print("State: " + str(st))
+        #print("List of actions: " + str(aa))
+        #print("List of Counters: " + str(self.visitedTimes[st]))
+        #print('Next State: ' + str(aa[a]))
+        #print(self.Q)
+        #time.sleep(0.5)
         return a
 
     # Select one action, used when evaluating
@@ -50,7 +72,7 @@ class LearningAgent:
     def selectactiontoexecute(self,st,aa):
         # define this function
         a = 0
-        maxValue = -1
+        maxValue = self.Q[st][0]
         for actionIdx in range(len(aa)):
             if self.Q[st][actionIdx] > maxValue:
                 maxValue = self.Q[st][actionIdx]
@@ -73,7 +95,7 @@ class LearningAgent:
 
     def maxInd(self, set):
         imax = 0
-        m =-1
+        m = set[0]
         for i in range(len(set)):
             if set[i] > m:
                 m = set[i]
