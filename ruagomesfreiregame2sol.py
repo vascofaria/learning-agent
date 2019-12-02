@@ -35,8 +35,12 @@ class LearningAgent:
     def selectactiontolearn(self,st,aa):
         # define this function
         # print("select one action to learn better")
+
+        # Random Choice
         #nA = len(aa)
         #a = random.randint(0, nA-1)
+
+        # Random Less Visited
         a = 0
         minValue = self.visitedTimes[st][0]
         for visIdx in range(len(aa)):
@@ -53,7 +57,6 @@ class LearningAgent:
 
         a = minList[random.randint(0, cnt-1)]
 
-        # define this function
         self.visitedTimes[st][a] += 1
         #print("State: " + str(st))
         #print("List of actions: " + str(aa))
@@ -61,6 +64,11 @@ class LearningAgent:
         #print('Next State: ' + str(aa[a]))
         #print(self.Q)
         #time.sleep(0.5)
+
+        # Great Rewarded Value
+        #a = 0
+
+
         return a
 
     # Select one action, used when evaluating
