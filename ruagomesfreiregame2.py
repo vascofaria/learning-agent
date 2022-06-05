@@ -1,7 +1,6 @@
 import pickle
 import random
-import matplotlib.pyplot as plt
-from ruagomesfreiregame2sol import *
+from A052 import *
 
 def runagent(A, T, R, I = 1, learningphase=True, nlearn = 1000, ntest = 100):
 
@@ -105,7 +104,7 @@ for nrep in range(0,NREP):
         print("# testing phase")
         Jn = runagent(A, T, R, I = 1, learningphase=False, ntest = 10)
         val[3] += Jn
-        print("average reward",Jn)        
+        print("average reward",Jn)
 
 
 val = list([ii/NREP for ii in val])
@@ -118,4 +117,4 @@ grade = 0
 for correct,mark in zip(cor,[3,7,3,7]):
         if correct:
                 grade += mark
-print("Grade in these tests (the final will also include hidden tests) : ", grade)        
+print("Grade in these tests (the final will also include hidden tests) : ", grade)
